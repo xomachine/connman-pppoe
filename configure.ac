@@ -175,6 +175,8 @@ fi
 AM_CONDITIONAL(PPTP, test "${enable_pptp}" != "no")
 AM_CONDITIONAL(PPTP_BUILTIN, test "${enable_pptp}" = "builtin")
 
+AC_ARG_WITH(pppoe, AC_HELP_STRING([--with-pppoe=PROGRAM],
+        [specify location of pppoe binary]), [path_pppoe=${withval}])
 AC_ARG_ENABLE(pppoe,
 	AC_HELP_STRING([--enable-pppoe], [enable pppoe support]),
 			[enable_pppoe=${enableval}], [enable_pppoe="no"])
@@ -187,6 +189,12 @@ if (test "${enable_pppoe}" != "no"); then
 	fi
 	AC_CHECK_HEADERS(pppd/pppd.h, dummy=yes,
 			AC_MSG_ERROR(ppp header files are required))
+	if (test -z "${path_pppoe}"); then
+		AC_PATH_PROG(PPPOE, [pppoe], [/usr/sbin/pppoe], $PATH:/sbin:/usr/sbin)
+	else
+		PPTP="${path_pppoe}"
+		AC_SUBST(PPPOE)
+	fi
 fi
 AM_CONDITIONAL(PPPOE, test "${enable_pppoe}" != "no")
 AM_CONDITIONAL(PPPOE_BUILTIN, test "${enable_pppoe}" = "builtin")

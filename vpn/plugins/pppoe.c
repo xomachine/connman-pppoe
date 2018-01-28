@@ -63,6 +63,8 @@ struct {
 	int type;
 } pppoe_options[] = {
 	{ "PPPoE.User", "user", NULL, OPT_STRING },
+	{ "PPPoE.Interface", "-I", "eth0", OPT_STRING },
+	{ "PPPoE.Service", "-S", "", OPT_STRING },
 	{ "PPPD.EchoFailure", "lcp-echo-failure", "0", OPT_STRING },
 	{ "PPPD.EchoInterval", "lcp-echo-interval", "0", OPT_STRING },
 	{ "PPPD.Debug", "debug", NULL, OPT_STRING },
@@ -420,7 +422,7 @@ static int run_connect(struct vpn_provider *provider,
 			vpn_provider_connect_cb_t cb, void *user_data,
 			const char *username, const char *password)
 {
-	const char *opt_s;
+	const char *opt_s, *interface, *service;
 	int err, i;
 
 	if (!username || !password) {
@@ -456,10 +458,18 @@ static int run_connect(struct vpn_provider *provider,
 			pppoe_write_bool_option(task,
 					pppoe_options[i].pppoe_opt, opt_s);
 	}
+	interface = vpn_provider_get_string(provider, "PPPoE.Interface");
+	if (!interface) {
+	  connman_error("The PPPoE.Interface field is required in the pppoe config");
+	  err = -EIO;
+	  goto done;
+	}
+	service = vpn_provider_get_string(provider, "PPPoE.Interface");
+	connman_task_add_argument(task, "pty", "%s -I %s -S \"%s\"", PPPOE,
+	                          interface, service);
 
 	connman_task_add_argument(task, "plugin",	SCRIPTDIR "/libppp-plugin.so");
 
-	connman_task_add_argument(task, "plugin", "rp-pppoe.so %s", if_name);
 	err = connman_task_run(task, vpn_died, provider,
 				NULL, NULL, NULL);
 	if (err < 0) {

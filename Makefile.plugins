@@ -159,13 +159,14 @@ if PPPOE_BUILTIN
 builtin_vpn_modules += pppoe
 builtin_vpn_sources += vpn/plugins/pppoe.c
 builtin_vpn_source = vpn/plugins/vpn.c vpn/plugins/vpn.h
-builtin_vpn_cflags += -DPPPD=\"@PPPD@\"
+builtin_vpn_cflags += -DPPPD=\"@PPPD@\" -DPPPOE=\"@PPPOE@\"
 else
 vpn_plugin_LTLIBRARIES += vpn/plugins/pppoe.la
 vpn_plugin_objects += $(plugins_pppoe_la_OBJECTS)
 vpn_plugins_pppoe_la_SOURCES = vpn/plugins/vpn.h vpn/plugins/vpn.c \
 						vpn/plugins/pppoe.c
 vpn_plugins_pppoe_la_CFLAGS = $(plugin_cflags) -DPPPD=\"@PPPD@\" \
+					-DPPPOE=\"@PPPOE@\" \
 					-DVPN_STATEDIR=\""$(vpn_statedir)"\" \
 					-DSCRIPTDIR=\""$(build_scriptdir)"\"
 vpn_plugins_pppoe_la_LDFLAGS = $(plugin_ldflags)
