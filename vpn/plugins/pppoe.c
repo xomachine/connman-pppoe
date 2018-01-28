@@ -235,8 +235,8 @@ static int pppoe_save(struct vpn_provider *provider, GKeyFile *keyfile)
 							pppoe_options[i].cm_opt);
 			if (!option) {
 				/*
-				 * Check if the option prefix is PPTP as the
-				 * PPPD options were using PPTP prefix earlier.
+				 * Check if the option prefix is PPPoE as the
+				 * PPPD options were using PPPoE prefix earlier.
 				 */
 				char *pppoe_str;
 
@@ -420,16 +420,8 @@ static int run_connect(struct vpn_provider *provider,
 			vpn_provider_connect_cb_t cb, void *user_data,
 			const char *username, const char *password)
 {
-	const char *opt_s, *host;
-	char *str;
+	const char *opt_s;
 	int err, i;
-
-	host = vpn_provider_get_string(provider, "Host");
-	if (!host) {
-		connman_error("Host not set; cannot enable VPN");
-		err = -EINVAL;
-		goto done;
-	}
 
 	if (!username || !password) {
 		DBG("Cannot connect username %s password %p",
@@ -439,17 +431,6 @@ static int run_connect(struct vpn_provider *provider,
 	}
 
 	DBG("username %s password %p", username, password);
-
-	str = g_strdup_printf("%s %s --nolaunchpppd --loglevel 2",
-				PPTP, host);
-	if (!str) {
-		connman_error("can not allocate memory");
-		err = -ENOMEM;
-		goto done;
-	}
-
-	connman_task_add_argument(task, "pty", str);
-	g_free(str);
 
 	connman_task_add_argument(task, "nodetach", NULL);
 	connman_task_add_argument(task, "lock", NULL);
