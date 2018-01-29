@@ -32,7 +32,7 @@ Each provisioned provider must start with the [provider_*] tag.
 Replace * with an identifier unique to the config file.
 
 Allowed fields:
-- Type: Provider type. Value of OpenConnect, OpenVPN, VPNC, L2TP or PPTP
+- Type: Provider type. Value of OpenConnect, OpenVPN, VPNC, L2TP, PPPoE or PPTP
 
 VPN related parameters (M = mandatory, O = optional):
 - Name: A user defined name for the VPN (M)
@@ -207,18 +207,57 @@ PPTP VPN supports following options (see pptp(8) and pppd(8) for details)
  PPPD.RequirMPPEStateful mppe-stateful    Allow MPPE to use stateful mode (O)
  PPPD.NoVJ           novj                 No Van Jacobson compression (O)
 
+PPPoE supports following options (see pppoe(8) and pppd(8) for details)
+NOTE: Since PPPoE connection does not require Host option it can be left
+      blank, but still required to be added to config. The ethernet interface
+      the PPPoE goes through is not required to be configured.
+ Option name         pppoe config value   Description
+ PPPoE.Interface      -I                  Ethernet interface, to be used
+                                          for connection (M)
+ PPPoE.Service        -S                  PPPoE service name, to connect to (O)
+ PPPoE.User           -                   PPPoE user name, asked from the user
+                                          if not set here (O)
+ PPPoE.Password       -                   PPPoE password, asked from the user
+                                          if not set here (O)
+
+ Option name         pppd config value    Description
+ PPPD.EchoFailure    lcp-echo-failure     Dead peer check count (O)
+ PPPD.EchoInterval   lcp-echo-interval    Dead peer check interval (O)
+ PPPD.Debug          debug                Debug level (O)
+ PPPD.RefuseEAP      refuse-eap           Deny eap auth (O)
+ PPPD.RefusePAP      refuse-pap           Deny pap auth (O)
+ PPPD.RefuseCHAP     refuse-chap          Deny chap auth (O)
+ PPPD.RefuseMSCHAP   refuse-mschap        Deny mschap auth (O)
+ PPPD.RefuseMSCHAP2  refuse-mschapv2      Deny mschapv2 auth (O)
+ PPPD.NoBSDComp      nobsdcomp            Disables BSD compression (O)
+ PPPD.NoDeflate      nodeflate            Disable deflate compression (O)
+ PPPD.RequirMPPE     require-mppe         Require the use of MPPE (O)
+ PPPD.RequirMPPE40   require-mppe-40      Require the use of MPPE 40 bit (O)
+ PPPD.RequirMPPE128  require-mppe-128     Require the use of MPPE 128 bit (O)
+ PPPD.RequirMPPEStateful mppe-stateful    Allow MPPE to use stateful mode (O)
+ PPPD.NoVJ           novj                 No Van Jacobson compression (O)
+
 
 Example
 =======
 
 This is a configuration file for a VPN providing L2TP, OpenVPN and
-OpenConnect services.
+OpenConnect services with the PPPoE connection as main internet provider.
 
 
 example@example:[~]$ cat /var/lib/connman/vpn/example.config
 [global]
 Name = Example
 Description = Example VPN configuration
+
+[provider_pppoe]
+Type = PPPoE
+Name = ADSL internet connection
+Host =
+Domain =
+PPPoE.User = username
+PPPoE.Password = password
+PPPoE.Interface = eth0
 
 [provider_l2tp]
 Type = L2TP

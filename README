@@ -346,7 +346,7 @@ with it.
 VPN
 ===
 
-In order to compile pptp and l2tp VPN plugins, you need ppp development
+In order to compile pptp, pppoe and l2tp VPN plugins, you need ppp development
 package.
 
 To run l2tp you will need
@@ -355,7 +355,10 @@ To run l2tp you will need
 To run pptp you will need
 	- pptp client, http://pptpclient.sourceforge.net
 
-Both l2tp and pptp also need pppd.
+To run pppoe you will need
+	- pppoe client, https://www.roaringpenguin.com/products/pppoe
+
+Both l2tp, pppoe and pptp also need pppd.
 
 
 OpenVPN
