@@ -63,8 +63,8 @@ struct {
 	int type;
 } pppoe_options[] = {
 	{ "PPPoE.User", "user", NULL, OPT_STRING },
-	{ "PPPoE.Interface", "-I", "eth0", OPT_STRING },
-	{ "PPPoE.Service", "-S", "", OPT_STRING },
+	{ "PPPoE.Interface", NULL, "eth0", OPT_STRING },
+	{ "PPPoE.Service", NULL, "", OPT_STRING },
 	{ "PPPD.EchoFailure", "lcp-echo-failure", "0", OPT_STRING },
 	{ "PPPD.EchoInterval", "lcp-echo-interval", "0", OPT_STRING },
 	{ "PPPD.Debug", "debug", NULL, OPT_STRING },
