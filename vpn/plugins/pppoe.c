@@ -439,7 +439,7 @@ static int run_connect(struct vpn_provider *provider,
 	connman_task_add_argument(task, "usepeerdns", NULL);
 	connman_task_add_argument(task, "noipdefault", NULL);
 	connman_task_add_argument(task, "noauth", NULL);
-	connman_task_add_argument(task, "nodefaultroute", NULL);
+	connman_task_add_argument(task, "defaultroute", NULL);
 	connman_task_add_argument(task, "ipparam", "pppoe_plugin");
 
 	for (i = 0; i < (int)ARRAY_SIZE(pppoe_options); i++) {
