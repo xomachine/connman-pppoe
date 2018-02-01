@@ -468,7 +468,7 @@ static int run_connect(struct vpn_provider *provider,
 	  err = -EIO;
 	  goto done;
 	}
-	service = vpn_provider_get_string(provider, "PPPoE.Interface");
+	service = vpn_provider_get_string(provider, "PPPoE.Service");
 	connman_task_add_argument(task, "pty", "%s -I %s -S \"%s\"", PPPOE,
 	                          interface, service);
 
