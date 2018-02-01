@@ -435,7 +435,7 @@ static int run_connect(struct vpn_provider *provider,
 	DBG("username %s password %p", username, password);
 
   /* If no route rules applied the pppoe connection becomes default route */
-	if (!vpn_provider_get_string(provider, "Network"))
+	if (!vpn_provider_get_string(provider, "Networks"))
 		connman_task_add_argument(task, "defaultroute", NULL);
   else
 		connman_task_add_argument(task, "nodefaultroute", NULL);
